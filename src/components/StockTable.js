@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { BsFillCaretUpFill, BsFillCaretDownFill } from "react-icons/bs";
 
 import finnHub from "../apis/finnHub";
@@ -8,6 +9,7 @@ import { WatchListContext } from "../context/WatchListContext";
 export default function StockTable() {
     const [stockData, setStockData] = useState([]);
     const { watchList } = useContext(WatchListContext);
+    const navigate = useNavigate();
 
     const changeColor = (percentage) => {
         return percentage > 0 ? "success" : "danger";
@@ -43,6 +45,10 @@ export default function StockTable() {
         fetchData();
     }, [watchList]);
 
+    const handleStockSelect = (symbol) => {
+        navigate(`details/${symbol}`);
+    };
+
     return (
         <>
             <div className="row">
@@ -67,20 +73,24 @@ export default function StockTable() {
                     <tbody>
                         {stockData.map((stock, index) => {
                             return (
-                                <tr key={stock.symbol}>
+                                <tr
+                                    key={stock.symbol}
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => handleStockSelect(stock.symbol)}
+                                >
                                     <th scope="row">{index + 1}</th>
                                     <td>{stock.symbol}</td>
-                                    <td>{stock.data.c}</td>
+                                    <td>${stock.data.c.toFixed(2)}</td>
                                     <td className={`text-${changeColor(stock.data.d)}`}>
                                         {stock.data.d} {changeIcon(stock.data.d)}
                                     </td>
                                     <td className={`text-${changeColor(stock.data.d)}`}>
                                         {stock.data.dp} {changeIcon(stock.data.dp)}
                                     </td>
-                                    <td>{stock.data.h}</td>
-                                    <td>{stock.data.l}</td>
-                                    <td>{stock.data.o}</td>
-                                    <td>{stock.data.pc}</td>
+                                    <td>${stock.data.h.toFixed(2)}</td>
+                                    <td>${stock.data.l.toFixed(2)}</td>
+                                    <td>${stock.data.o.toFixed(2)}</td>
+                                    <td>${stock.data.pc.toFixed(2)}</td>
                                 </tr>
                             );
                         })}
