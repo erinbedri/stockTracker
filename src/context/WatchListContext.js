@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 export const WatchListContext = createContext();
 
 export const WatchListContextProvier = (props) => {
-    const [watchList, setWatchList] = useState(["GOOGL", "MSFT", "AMZN", "INTL"]);
+    const [watchList, setWatchList] = useState(["GOOGL", "MSFT", "AMZN", "INTC"]);
 
     const addStock = (stock) => {
         if (!watchList.includes(stock)) {
