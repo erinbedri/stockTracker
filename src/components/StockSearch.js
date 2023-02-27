@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import finnHub from "../apis/finnHub";
+import { WatchListContext } from "../context/WatchListContext";
 
 export default function StockSearch() {
     const [search, setSearch] = useState("");
     const [results, setResults] = useState([]);
+    const { addStock } = useContext(WatchListContext);
 
     const renderDropdown = () => {
         const dropdownClass = search ? "show" : null;
@@ -19,7 +21,14 @@ export default function StockSearch() {
                 className={`dropdown-menu ${dropdownClass}`}
             >
                 {results.map((result) => (
-                    <li className="dropdown-item" key={result.symbol}>
+                    <li
+                        className="dropdown-item"
+                        key={result.symbol}
+                        onClick={() => {
+                            addStock(result.symbol);
+                            setSearch("");
+                        }}
+                    >
                         {result.description} ({result.symbol})
                     </li>
                 ))}
@@ -44,8 +53,6 @@ export default function StockSearch() {
             setResults([]);
         }
     }, [search]);
-
-    console.log(results);
 
     return (
         <div className="w-50 mx-auto">

@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { BsFillCaretUpFill, BsFillCaretDownFill } from "react-icons/bs";
 
 import finnHub from "../apis/finnHub";
 import StockSearch from "./StockSearch";
+import { WatchListContext } from "../context/WatchListContext";
 
 export default function StockTable() {
-    const [stockList, setStockList] = useState(["GOOGL", "MSFT", "AMZN", "INTL"]);
     const [stockData, setStockData] = useState([]);
+    const { watchList } = useContext(WatchListContext);
 
     const changeColor = (percentage) => {
         return percentage > 0 ? "success" : "danger";
@@ -20,7 +21,7 @@ export default function StockTable() {
         const fetchData = async () => {
             try {
                 const responses = await Promise.all(
-                    stockList.map((stock) => {
+                    watchList.map((stock) => {
                         return finnHub.get("/quote", {
                             params: {
                                 symbol: stock,
@@ -40,7 +41,7 @@ export default function StockTable() {
             }
         };
         fetchData();
-    }, []);
+    }, [watchList]);
 
     return (
         <>
