@@ -8,7 +8,7 @@ const formatData = (data) => {
     return data.t.map((el, index) => {
         return {
             x: el * 1000,
-            y: data.c[index],
+            y: data.c[index].toFixed(2),
         };
     });
 };
@@ -22,8 +22,10 @@ export default function StockDetails() {
             const date = new Date();
             const currentTime = Math.floor(date.getTime() / 1000);
             let oneDay;
-            const oneWeek = 7 * 24 * 60 * 60;
-            const oneYear = 365 * 24 * 60 * 60;
+            const oneWeek = currentTime - 604800;
+            const oneYear = currentTime - 31556926;
+
+            console.log(currentTime);
 
             if (date.getDay() === 6) {
                 oneDay = currentTime - 2 * 24 * 60 * 60;
@@ -40,7 +42,7 @@ export default function StockDetails() {
                             symbol,
                             from: oneDay,
                             to: currentTime,
-                            resolution: 30,
+                            resolution: 15,
                         },
                     }),
                     finnHub.get("stock/candle", {
@@ -76,8 +78,7 @@ export default function StockDetails() {
 
     return (
         <>
-            <div>Stock {symbol}</div>
-            {chartData && <StockChart />}
+            <div>{chartData && <StockChart chartData={chartData} symbol={symbol} />}</div>
         </>
     );
 }
