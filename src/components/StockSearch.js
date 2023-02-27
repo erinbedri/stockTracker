@@ -1,0 +1,68 @@
+import React, { useState, useEffect } from "react";
+
+import finnHub from "../apis/finnHub";
+
+export default function StockSearch() {
+    const [search, setSearch] = useState("");
+    const [results, setResults] = useState([]);
+
+    const renderDropdown = () => {
+        const dropdownClass = search ? "show" : null;
+        return (
+            <ul
+                style={{
+                    height: "500px",
+                    overflowY: "scroll",
+                    overflowX: "hidder",
+                    cursor: "pointer",
+                }}
+                className={`dropdown-menu ${dropdownClass}`}
+            >
+                {results.map((result) => (
+                    <li className="dropdown-item" key={result.symbol}>
+                        {result.description} ({result.symbol})
+                    </li>
+                ))}
+            </ul>
+        );
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await finnHub.get("/search", {
+                    params: {
+                        q: search,
+                    },
+                });
+                setResults(response.data.result);
+            } catch (err) {}
+        };
+        if (search.length > 0) {
+            fetchData();
+        } else {
+            setResults([]);
+        }
+    }, [search]);
+
+    console.log(results);
+
+    return (
+        <div className="w-50 mx-auto">
+            <div className="form-floating dropdown">
+                <input
+                    id="search"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="form-control form-control-lg"
+                    type="text"
+                    placeholder="Search for Stock"
+                    autoComplete="off"
+                />
+                <label htmlFor="search">Search for Stock</label>
+
+                {renderDropdown()}
+            </div>
+        </div>
+    );
+}
