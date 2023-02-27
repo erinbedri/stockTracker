@@ -25,8 +25,6 @@ export default function StockDetails() {
             const oneWeek = currentTime - 604800;
             const oneYear = currentTime - 31556926;
 
-            console.log(currentTime);
-
             if (date.getDay() === 6) {
                 oneDay = currentTime - 2 * 24 * 60 * 60;
             } else if (date.getDay() === 0) {
@@ -67,14 +65,14 @@ export default function StockDetails() {
                     week: formatData(responses[1].data),
                     year: formatData(responses[2].data),
                 });
-
-                console.log(responses);
             } catch (err) {
                 console.log(err);
             }
         };
         fetchData();
     }, [symbol]);
+
+    console.log(chartData);
 
     return (
         <>
