@@ -8,7 +8,7 @@ import { WatchListContext } from "../context/WatchListContext";
 
 export default function StockTable() {
     const [stockData, setStockData] = useState([]);
-    const { watchList } = useContext(WatchListContext);
+    const { watchList, deleteStock } = useContext(WatchListContext);
     const navigate = useNavigate();
 
     const changeColor = (percentage) => {
@@ -68,6 +68,7 @@ export default function StockTable() {
                             <th scope="col">Low price of the day</th>
                             <th scope="col">Open price of the day</th>
                             <th scope="col">Previous close price</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,6 +92,18 @@ export default function StockTable() {
                                     <td>${stock.data.l.toFixed(2)}</td>
                                     <td>${stock.data.o.toFixed(2)}</td>
                                     <td>${stock.data.pc.toFixed(2)}</td>
+                                    <td>
+                                        <button
+                                            className="btn btn-danger btn-sm"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                console.log(stockData.symbol);
+                                                deleteStock(stock.symbol);
+                                            }}
+                                        >
+                                            remove
+                                        </button>
+                                    </td>
                                 </tr>
                             );
                         })}
