@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { BsFillCaretUpFill, BsFillCaretDownFill } from "react-icons/bs";
 
 import finnHub from "../apis/finnHub";
 
 export default function StockTable() {
     const [stockList, setStockList] = useState(["GOOGL", "MSFT", "AMZN", "INTL"]);
     const [stockData, setStockData] = useState([]);
+
+    const changeColor = (percentage) => {
+        return percentage > 0 ? "success" : "danger";
+    };
+
+    const changeIcon = (percentage) => {
+        return percentage > 0 ? <BsFillCaretUpFill /> : <BsFillCaretDownFill />;
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,7 +46,7 @@ export default function StockTable() {
         <div>
             <table className="table table-hover">
                 <thead>
-                    <tr>
+                    <tr className="table-secondary">
                         <th scope="col">#</th>
                         <th scope="col">STOCK</th>
                         <th scope="col">Current price</th>
@@ -56,8 +65,12 @@ export default function StockTable() {
                                 <th scope="row">{index + 1}</th>
                                 <td>{stock.symbol}</td>
                                 <td>{stock.data.c}</td>
-                                <td>{stock.data.d}</td>
-                                <td>{stock.data.dp}</td>
+                                <td className={`text-${changeColor(stock.data.d)}`}>
+                                    {stock.data.d} {changeIcon(stock.data.d)}
+                                </td>
+                                <td className={`text-${changeColor(stock.data.d)}`}>
+                                    {stock.data.dp} {changeIcon(stock.data.dp)}
+                                </td>
                                 <td>{stock.data.h}</td>
                                 <td>{stock.data.l}</td>
                                 <td>{stock.data.o}</td>
