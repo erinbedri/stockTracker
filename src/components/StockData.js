@@ -3,7 +3,7 @@ import finnHub from "../apis/finnHub";
 
 const formatMarketCap = (number) => {
     if (number > 1000000) return Math.floor(number / 1000).toLocaleString("en-US") + "T";
-    else if (number > 100000) return Math.floor(number / 1000).toLocaleString("en-US") + "B";
+    else if (number > 1000) return Math.floor(number / 1000).toLocaleString("en-US") + "B";
     else return Math.floor(number / 1000).toLocaleString("en-US") + "M";
 };
 
