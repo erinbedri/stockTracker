@@ -36,7 +36,6 @@ export default function StockData({ symbol }) {
                     basics: responses[0].data.metric,
                     data: responses[1].data,
                 });
-                console.log(stockData.basics);
             } catch (err) {
                 console.log(err);
             }
@@ -80,7 +79,7 @@ export default function StockData({ symbol }) {
                         </div>
                         <div className="col">
                             <div>
-                                <span className="fw-bold">Market Cap: </span>
+                                <span className="fw-bold">Market Cap: </span>$
                                 {formatMarketCap(stockData.data.marketCapitalization)}
                             </div>
                             <div>
@@ -90,20 +89,39 @@ export default function StockData({ symbol }) {
                         </div>
 
                         <div className="row mt-5 mb-5">
+                            <h4 className="fw-bold">Statistics</h4>
                             <div className="col">
                                 <div>
-                                    <span className="fw-bold">52 Weeek High: </span>${stockData.basics["52WeekHigh"]}
+                                    <span className="fw-bold">Beta: </span>
+                                    {stockData.basics.beta.toFixed(2)}
+                                </div>
+                                <div>
+                                    <span className="fw-bold">52 Weeek High: </span>$
+                                    {stockData.basics["52WeekHigh"].toFixed(2)}
                                 </div>
                                 <div>
                                     <span className="fw-bold">52 Weeek High Date: </span>
                                     {stockData.basics["52WeekHighDate"]}
                                 </div>
                                 <div>
-                                    <span className="fw-bold">52 Weeek Low: </span>${stockData.basics["52WeekLow"]}
+                                    <span className="fw-bold">52 Weeek Low: </span>$
+                                    {stockData.basics["52WeekLow"].toFixed(2)}
                                 </div>
                                 <div>
                                     <span className="fw-bold">52 Weeek Low Date: </span>
                                     {stockData.basics["52WeekLowDate"]}
+                                </div>
+                                <div>
+                                    <span className="fw-bold">Current Divident Yield (ttm): </span>
+                                    {stockData.basics.currentDividendYieldTTM
+                                        ? `${stockData.basics.currentDividendYieldTTM.toFixed(2)}%`
+                                        : "NA"}
+                                </div>
+                                <div>
+                                    <span className="fw-bold">Divident per Share (ttm): </span>
+                                    {stockData.basics.dividendsPerShareTTM
+                                        ? `$${stockData.basics.dividendsPerShareTTM.toFixed(2)}`
+                                        : "NA"}
                                 </div>
                             </div>
                         </div>
