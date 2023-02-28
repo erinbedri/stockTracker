@@ -44,7 +44,9 @@ export default function StockSearch() {
                         q: search,
                     },
                 });
-                setResults(response.data.result);
+
+                const data = response.data.result.filter((result) => !result.symbol.includes("."));
+                setResults(data);
             } catch (err) {}
         };
         if (search.length > 0) {
