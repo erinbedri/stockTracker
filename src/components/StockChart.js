@@ -69,8 +69,8 @@ export default function StockChart({ chartData, symbol }) {
 
     return (
         <>
-            <div className="mt-5 p-4 shadow-sm bg-white">
-                <Chart options={options} series={series} type="area" width="100%" height="500px" />
+            <div className="p-4 shadow-sm bg-white">
+                <Chart options={options} series={series} type="area" width="100%" height="450px" />
 
                 <div>
                     <button type="button" className={renderButtonClasses("24h")} onClick={() => setDateFormat("24h")}>

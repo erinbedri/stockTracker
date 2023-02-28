@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import finnHub from "../apis/finnHub";
 import StockChart from "../components/StockChart";
+import StockData from "../components/StockData";
 
 const formatData = (data) => {
     return data.t.map((el, index) => {
@@ -72,11 +73,11 @@ export default function StockDetails() {
         fetchData();
     }, [symbol]);
 
-    console.log(chartData);
-
     return (
         <>
             <div>{chartData && <StockChart chartData={chartData} symbol={symbol} />}</div>
+
+            <StockData symbol={symbol} />
         </>
     );
 }
