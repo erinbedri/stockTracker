@@ -13,7 +13,7 @@ export default function StockSearch() {
         return (
             <ul
                 style={{
-                    height: "500px",
+                    height: "250px",
                     overflowY: "scroll",
                     overflowX: "hidder",
                     cursor: "pointer",
