@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import finnHub from "../apis/finnHub";
 
 const formatMarketCap = (number) => {
-    if (number > 1000000) return Math.floor(number / 1000).toLocaleString("en-US") + "T";
-    else if (number > 1000) return Math.floor(number / 1000).toLocaleString("en-US") + "B";
-    else return Math.floor(number / 1000).toLocaleString("en-US") + "M";
+    if (number > 1000000) return (number / 1000000).toFixed(2).toLocaleString("en-US") + "T";
+    else if (number > 1000) return (number / 1000).toFixed(2).toLocaleString("en-US") + "B";
+    else return number.toFixed(2).toLocaleString("en-US") + "M";
 };
 
 const formatSharesOut = (number) => {
-    if (number > 100000) return Math.floor(number).toLocaleString("en-US") + "T";
-    else if (number > 1000) return Math.floor(number).toLocaleString("en-US") + "B";
-    else return Math.floor(number).toLocaleString("en-US") + "M";
+    if (number > 1000000) return (number / 1000).toFixed(2).toLocaleString("en-US") + "T";
+    else if (number > 1000) return (number / 1000).toFixed(2).toLocaleString("en-US") + "B";
+    else return number.toFixed(2).toLocaleString("en-US") + "M";
 };
 
 export default function StockData({ symbol }) {
