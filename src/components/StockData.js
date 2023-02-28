@@ -24,7 +24,6 @@ export default function StockData({ symbol }) {
                         symbol: symbol,
                     },
                 });
-                console.log(response.data);
                 setStockData(response.data);
             } catch (err) {
                 console.log(err);
@@ -76,6 +75,10 @@ export default function StockData({ symbol }) {
                                 <div>
                                     <span className="fw-bold">Shares Outstanding: </span>
                                     {formatSharesOut(stockData.shareOutstanding)}
+                                </div>
+                                <div>
+                                    <span className="fw-bold">Homepage: </span>
+                                    {stockData.weburl}
                                 </div>
                             </div>
                         </div>
