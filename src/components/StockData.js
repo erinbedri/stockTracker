@@ -37,7 +37,7 @@ export default function StockData({ symbol }) {
             {stockData && (
                 <div className="p-4 shadow-sm bg-white">
                     <div className="row">
-                        <img src={stockData.logo} style={{ width: "100px" }} />
+                        <img src={stockData.logo} style={{ width: "100px" }} alt="logo" />
                         <div className="col">
                             <div>
                                 <span className="fw-bold">Name: </span>
