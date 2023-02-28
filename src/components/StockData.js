@@ -19,12 +19,24 @@ export default function StockData({ symbol }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await finnHub.get("stock/profile2/", {
-                    params: {
-                        symbol: symbol,
-                    },
+                const responses = await Promise.all([
+                    finnHub.get("stock/metric", {
+                        params: {
+                            symbol,
+                            metric: "all",
+                        },
+                    }),
+                    finnHub.get("stock/profile2/", {
+                        params: {
+                            symbol: symbol,
+                        },
+                    }),
+                ]);
+                setStockData({
+                    basics: responses[0].data.metric,
+                    data: responses[1].data,
                 });
-                setStockData(response.data);
+                console.log(stockData.basics);
             } catch (err) {
                 console.log(err);
             }
@@ -37,47 +49,62 @@ export default function StockData({ symbol }) {
             {stockData && (
                 <div className="p-4 shadow-sm bg-white">
                     <div className="row">
-                        <img src={stockData.logo} style={{ width: "100px" }} alt="logo" />
+                        <img src={stockData.data.logo} style={{ width: "100px" }} alt="logo" />
                         <div className="col">
                             <div>
                                 <span className="fw-bold">Name: </span>
-                                {stockData.name}
+                                {stockData.data.name}
                             </div>
                             <div>
                                 <span className="fw-bold">Country: </span>
-                                {stockData.country}
+                                {stockData.data.country}
                             </div>
                             <div>
                                 <span className="fw-bold">Industry: </span>
-                                {stockData.finnhubIndustry}
+                                {stockData.data.finnhubIndustry}
                             </div>
                         </div>
                         <div className="col">
                             <div>
                                 <span className="fw-bold">IPO: </span>
-                                {stockData.ipo}
+                                {stockData.data.ipo}
                             </div>
                             <div>
                                 <span className="fw-bold">Exchange: </span>
-                                {stockData.exchange}
+                                {stockData.data.exchange}
                             </div>
                             <div>
                                 <span className="fw-bold">Currency: </span>
-                                {stockData.currency}
+                                {stockData.data.currency}
                             </div>
                         </div>
                         <div className="col">
                             <div>
                                 <span className="fw-bold">Market Cap: </span>
-                                {formatMarketCap(stockData.marketCapitalization)}
+                                {formatMarketCap(stockData.data.marketCapitalization)}
                             </div>
                             <div>
                                 <span className="fw-bold">Shares Outstanding: </span>
-                                {formatSharesOut(stockData.shareOutstanding)}
+                                {formatSharesOut(stockData.data.shareOutstanding)}
                             </div>
-                            <div>
-                                <span className="fw-bold">Homepage: </span>
-                                {stockData.weburl}
+                        </div>
+
+                        <div className="row mt-5 mb-5">
+                            <div className="col">
+                                <div>
+                                    <span className="fw-bold">52 Weeek High: </span>${stockData.basics["52WeekHigh"]}
+                                </div>
+                                <div>
+                                    <span className="fw-bold">52 Weeek High Date: </span>
+                                    {stockData.basics["52WeekHighDate"]}
+                                </div>
+                                <div>
+                                    <span className="fw-bold">52 Weeek Low: </span>${stockData.basics["52WeekLow"]}
+                                </div>
+                                <div>
+                                    <span className="fw-bold">52 Weeek Low Date: </span>
+                                    {stockData.basics["52WeekLowDate"]}
+                                </div>
                             </div>
                         </div>
                     </div>
