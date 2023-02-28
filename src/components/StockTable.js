@@ -9,6 +9,8 @@ import { WatchListContext } from "../context/WatchListContext";
 export default function StockTable() {
     const [stockData, setStockData] = useState([]);
     const { watchList, deleteStock } = useContext(WatchListContext);
+    const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
 
     const changeColor = (percentage) => {
@@ -37,6 +39,7 @@ export default function StockTable() {
                         symbol: response.config.params.symbol,
                     };
                 });
+                setLoading(false);
                 setStockData(data);
             } catch (err) {
                 console.log(err);
@@ -51,6 +54,18 @@ export default function StockTable() {
 
     return (
         <>
+            {loading && (
+                <div className="m-5 d-flex align-items-center">
+                    <strong>Loading...</strong>
+                    <div
+                        className="spinner-grow text-primary ms-auto"
+                        style={{ width: "3rem", height: "3rem" }}
+                        role="status"
+                        aria-hidden="true"
+                    ></div>
+                </div>
+            )}
+
             <div className="row">
                 <StockSearch />
             </div>

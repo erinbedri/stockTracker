@@ -17,6 +17,7 @@ const formatData = (data) => {
 export default function StockDetails() {
     const { symbol } = useParams();
     const [chartData, setChartData] = useState();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,6 +67,7 @@ export default function StockDetails() {
                     week: formatData(responses[1].data),
                     year: formatData(responses[2].data),
                 });
+                setLoading(false);
             } catch (err) {
                 console.log(err);
             }
@@ -75,6 +77,18 @@ export default function StockDetails() {
 
     return (
         <>
+            {loading && (
+                <div className="m-5 d-flex align-items-center">
+                    <strong>Loading...</strong>
+                    <div
+                        className="spinner-grow text-primary ms-auto"
+                        style={{ width: "3rem", height: "3rem" }}
+                        role="status"
+                        aria-hidden="true"
+                    ></div>
+                </div>
+            )}
+
             <div>{chartData && <StockChart chartData={chartData} symbol={symbol} />}</div>
 
             <StockData symbol={symbol} />
