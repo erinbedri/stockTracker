@@ -36,7 +36,6 @@ export default function StockData({ symbol }) {
                     basics: responses[0].data.metric,
                     data: responses[1].data,
                 });
-                console.log(responses[0].data.metric);
             } catch (err) {
                 console.log(err);
             }

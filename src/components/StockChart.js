@@ -67,6 +67,8 @@ export default function StockChart({ chartData, symbol }) {
         }
     };
 
+    console.log(chartData);
+
     return (
         <>
             <div className="p-4 shadow-sm bg-white">
