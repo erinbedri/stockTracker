@@ -36,6 +36,7 @@ export default function StockData({ symbol }) {
                     basics: responses[0].data.metric,
                     data: responses[1].data,
                 });
+                console.log(responses[0].data.metric);
             } catch (err) {
                 console.log(err);
             }
@@ -90,11 +91,22 @@ export default function StockData({ symbol }) {
 
                         <div className="row mt-5 mb-5">
                             <h4 className="fw-bold">Statistics</h4>
-                            <div className="col">
+                            <div className="mb-2">
                                 <div>
                                     <span className="fw-bold">Beta: </span>
                                     {stockData.basics.beta.toFixed(2)}
                                 </div>
+                                <div>
+                                    <span className="fw-bold">PE Ratio (annual): </span>
+                                    {stockData.basics.peNormalizedAnnual.toFixed(2)}
+                                </div>
+                                <div>
+                                    <span className="fw-bold">PB Ratio (annual): </span>
+                                    {stockData.basics.pbAnnual.toFixed(2)}
+                                </div>
+                            </div>
+
+                            <div className="mb-2">
                                 <div>
                                     <span className="fw-bold">52 Weeek High: </span>$
                                     {stockData.basics["52WeekHigh"].toFixed(2)}
@@ -111,16 +123,25 @@ export default function StockData({ symbol }) {
                                     <span className="fw-bold">52 Weeek Low Date: </span>
                                     {stockData.basics["52WeekLowDate"]}
                                 </div>
+                            </div>
+
+                            <div className="mb-2">
                                 <div>
-                                    <span className="fw-bold">Current Divident Yield (ttm): </span>
+                                    <span className="fw-bold">Current Dividend Yield: </span>
                                     {stockData.basics.currentDividendYieldTTM
                                         ? `${stockData.basics.currentDividendYieldTTM.toFixed(2)}%`
                                         : "NA"}
                                 </div>
                                 <div>
-                                    <span className="fw-bold">Divident per Share (ttm): </span>
+                                    <span className="fw-bold">Dividend per Share (annual): </span>
                                     {stockData.basics.dividendsPerShareTTM
-                                        ? `$${stockData.basics.dividendsPerShareTTM.toFixed(2)}`
+                                        ? `$${stockData.basics.dividendPerShareAnnual.toFixed(2)}`
+                                        : "NA"}
+                                </div>
+                                <div>
+                                    <span className="fw-bold">Avereage Dividend per Share (5y): </span>
+                                    {stockData.basics.dividendsPerShareTTM
+                                        ? `$${stockData.basics.dividendPerShare5Y.toFixed(2)}`
                                         : "NA"}
                                 </div>
                             </div>
