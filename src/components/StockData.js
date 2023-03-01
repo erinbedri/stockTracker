@@ -93,15 +93,17 @@ export default function StockData({ symbol }) {
                             <div className="mb-2">
                                 <div>
                                     <span className="fw-bold">Beta: </span>
-                                    {stockData.basics.beta.toFixed(2)}
+                                    {stockData.basics.beta ? `${stockData.basics.beta.toFixed(2)}` : "NA"}
                                 </div>
                                 <div>
                                     <span className="fw-bold">PE Ratio (annual): </span>
-                                    {stockData.basics.peNormalizedAnnual.toFixed(2)}
+                                    {stockData.basics.peNormalizedAnnual
+                                        ? `${stockData.basics.peNormalizedAnnual.toFixed(2)}`
+                                        : "NA"}
                                 </div>
                                 <div>
                                     <span className="fw-bold">PB Ratio (annual): </span>
-                                    {stockData.basics.pbAnnual.toFixed(2)}
+                                    {stockData.basics.pbAnnual ? `${stockData.basics.pbAnnual.toFixed(2)}` : "NA"}
                                 </div>
                             </div>
 
