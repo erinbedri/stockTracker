@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 
 export const WatchListContext = createContext();
 
-export const WatchListContextProvier = (props) => {
+export const WatchListContextProvider = (props) => {
     const [watchList, setWatchList] = useState(
         localStorage.getItem("watchList")?.split(",") || ["GOOGL", "MSFT", "AMZN", "INTC"]
     );

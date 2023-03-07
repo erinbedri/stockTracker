@@ -41,7 +41,7 @@ export default function StockData({ symbol }) {
             }
         };
         fetchData();
-    }, []);
+    }, [symbol]);
 
     return (
         <div>
