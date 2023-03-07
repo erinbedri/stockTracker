@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { BsFillCaretUpFill, BsFillCaretDownFill } from "react-icons/bs";
 
 import finnHub from "../apis/finnHub";
@@ -112,7 +112,6 @@ export default function StockTable() {
                                             className="btn btn-danger btn-sm"
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                console.log(stockData.symbol);
                                                 deleteStock(stock.symbol);
                                             }}
                                         >
