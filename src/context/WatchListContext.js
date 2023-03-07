@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { app, database } from "../firebaseConfig";
 
 export const WatchListContext = createContext();
 
