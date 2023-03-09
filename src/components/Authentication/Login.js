@@ -22,7 +22,7 @@ export default function Register() {
 
         signInWithEmailAndPassword(auth, data.email, data.password)
             .then((response) => {
-                login(response.user.accessToken);
+                login(response.user.accessToken, response.user.email);
                 navigate("/stocks");
             })
             .catch((err) => {
