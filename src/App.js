@@ -10,6 +10,7 @@ import AuthenticatedUser from "./components/Authentication/AuthenticatedUser";
 import Login from "./components/Authentication/Login";
 import Register from "./components/Authentication/Register";
 import Logout from "./components/Authentication/Logout";
+import NotFound from "./components/NotFound";
 
 function App() {
     return (
@@ -28,6 +29,8 @@ function App() {
                                 <Route path="/stocks" element={<StockList />} />
                                 <Route path="/stocks/details/:symbol" element={<StockDetails />} />
                             </Route>
+
+                            <Route path="*" element={<NotFound />} />
                         </Routes>
                     </BrowserRouter>
                 </div>
