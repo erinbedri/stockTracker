@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { app } from "../../firebaseConfig";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -59,8 +59,14 @@ export default function Register() {
                             />
                             <label htmlFor="password">Password</label>
                         </div>
+                        <p className="mt-3">
+                            If you do not have an account yet, please
+                            <Link to="/register" style={{ textDecoration: "none" }}>
+                                <span> register</span>
+                            </Link>
+                        </p>
 
-                        <button type="submit" className="btn btn-primary mt-4">
+                        <button type="submit" className="btn btn-primary">
                             Login
                         </button>
                     </div>
