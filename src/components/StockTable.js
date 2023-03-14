@@ -55,6 +55,14 @@ export default function StockTable() {
         navigate(`details/${symbol}`);
     };
 
+    const getShares = (stock) => {
+        const stockNumbersStr = localStorage.getItem("stockNumbers");
+        const stockNumbers = JSON.parse(stockNumbersStr);
+
+        const specificValue = stockNumbers[stock.symbol];
+        return Number(specificValue);
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -111,15 +119,18 @@ export default function StockTable() {
                 <table className="table table-hover">
                     <thead>
                         <tr className="table-secondary" style={{ verticalAlign: "middle", textAlign: "right" }}>
-                            <th scope="col"></th>
+                            <th style={{ textAlign: "center" }} scope="col">
+                                Shares
+                            </th>
                             <th scope="col">Ticker</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Change %</th>
+                            <th scope="col">Price $</th>
                             <th scope="col">Change $</th>
-                            <th scope="col">High</th>
-                            <th scope="col">Low</th>
-                            <th scope="col">Open</th>
-                            <th scope="col">Close</th>
+                            <th scope="col">Change %</th>
+                            <th scope="col">High $</th>
+                            <th scope="col">Low $</th>
+                            <th scope="col">Open $</th>
+                            <th scope="col">Close $</th>
+                            <th scope="col">TOTAL $</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -133,6 +144,7 @@ export default function StockTable() {
                                 >
                                     <th scope="row" style={{ width: "8%" }}>
                                         <input
+                                            style={{ textAlign: "center" }}
                                             name={stock.symbol}
                                             value={stockNumbers[stock.symbol]}
                                             type="number"
@@ -143,17 +155,23 @@ export default function StockTable() {
                                         />
                                     </th>
                                     <td>{stock.symbol}</td>
-                                    <td>${stock.data.c.toFixed(2)}</td>
+                                    <td>{stock.data.c.toFixed(2)}</td>
                                     <td className={`text-${changeColor(stock.data.d)}`}>
-                                        ${stock.data.d} {changeIcon(stock.data.d)}
+                                        {stock.data.d} {changeIcon(stock.data.d)}
                                     </td>
                                     <td className={`text-${changeColor(stock.data.d)}`}>
                                         {stock.data.dp} {changeIcon(stock.data.dp)}
                                     </td>
-                                    <td>${stock.data.h.toFixed(2)}</td>
-                                    <td>${stock.data.l.toFixed(2)}</td>
-                                    <td>${stock.data.o.toFixed(2)}</td>
-                                    <td>${stock.data.pc.toFixed(2)}</td>
+                                    <td>{stock.data.h.toFixed(2)}</td>
+                                    <td>{stock.data.l.toFixed(2)}</td>
+                                    <td>{stock.data.o.toFixed(2)}</td>
+                                    <td>{stock.data.pc.toFixed(2)}</td>
+                                    <td>
+                                        {((getShares(stock) || 0) * stock.data.c).toLocaleString("en-US", {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2,
+                                        })}
+                                    </td>
                                     <td>
                                         <button className="btn btn-danger btn-sm" onClick={(e) => onRemove(e, stock)}>
                                             X
