@@ -8,6 +8,7 @@ import { WatchListContext } from "../context/WatchListContext";
 
 export default function StockTable() {
     const [stockData, setStockData] = useState([]);
+    const [stockNumbers, setStockNumbers] = useState({});
     const { watchList, deleteStock } = useContext(WatchListContext);
     const [loading, setLoading] = useState(true);
 
@@ -28,6 +29,30 @@ export default function StockTable() {
         if (response) {
             deleteStock(stock.symbol);
         }
+    };
+
+    const inputHandler = (e) => {
+        e.stopPropagation();
+
+        const { name, value } = e.target;
+
+        // Update the stockNumbers state with the new value
+        setStockNumbers((prevStockNumbers) => ({
+            ...prevStockNumbers,
+            [name]: value,
+        }));
+
+        // Store the updated stockNumbers state in localStorage
+        localStorage.setItem("stockNumbers", JSON.stringify({ ...stockNumbers, [name]: value }));
+    };
+
+    const handleStockSelect = (e, symbol) => {
+        if (e.target.tagName === "INPUT") {
+            e.preventDefault();
+            return;
+        }
+
+        navigate(`details/${symbol}`);
     };
 
     useEffect(() => {
@@ -57,9 +82,12 @@ export default function StockTable() {
         fetchData();
     }, [watchList]);
 
-    const handleStockSelect = (symbol) => {
-        navigate(`details/${symbol}`);
-    };
+    useEffect(() => {
+        const storedStockNumbers = JSON.parse(localStorage.getItem("stockNumbers"));
+        if (storedStockNumbers) {
+            setStockNumbers(storedStockNumbers);
+        }
+    }, []);
 
     return (
         <>
@@ -82,28 +110,38 @@ export default function StockTable() {
             <div className="row mt-5">
                 <table className="table table-hover">
                     <thead>
-                        <tr className="table-secondary">
-                            <th scope="col">#</th>
-                            <th scope="col">STOCK</th>
-                            <th scope="col">Current price</th>
-                            <th scope="col">Change</th>
-                            <th scope="col">Percent change</th>
-                            <th scope="col">High price of the day</th>
-                            <th scope="col">Low price of the day</th>
-                            <th scope="col">Open price of the day</th>
-                            <th scope="col">Previous close price</th>
+                        <tr className="table-secondary" style={{ verticalAlign: "middle", textAlign: "right" }}>
+                            <th scope="col"></th>
+                            <th scope="col">Ticker</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Change %</th>
+                            <th scope="col">Change $</th>
+                            <th scope="col">High</th>
+                            <th scope="col">Low</th>
+                            <th scope="col">Open</th>
+                            <th scope="col">Close</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {stockData.map((stock, index) => {
+                        {stockData.map((stock) => {
                             return (
                                 <tr
                                     key={stock.symbol}
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => handleStockSelect(stock.symbol)}
+                                    style={{ cursor: "pointer", verticalAlign: "middle", textAlign: "right" }}
+                                    onClick={(e) => handleStockSelect(e, stock.symbol)}
                                 >
-                                    <th scope="row">{index + 1}</th>
+                                    <th scope="row" style={{ width: "8%" }}>
+                                        <input
+                                            name={stock.symbol}
+                                            value={stockNumbers[stock.symbol]}
+                                            type="number"
+                                            className="form-control"
+                                            id="numberOfStocks"
+                                            min={0}
+                                            onChange={(e) => inputHandler(e)}
+                                        />
+                                    </th>
                                     <td>{stock.symbol}</td>
                                     <td>${stock.data.c.toFixed(2)}</td>
                                     <td className={`text-${changeColor(stock.data.d)}`}>
@@ -130,3 +168,5 @@ export default function StockTable() {
         </>
     );
 }
+
+//                                     <th scope="row">{index + 1}</th>
