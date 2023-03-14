@@ -127,7 +127,7 @@ export default function StockTable() {
                                     style={{ cursor: "pointer", verticalAlign: "middle", textAlign: "right" }}
                                     onClick={(e) => handleStockSelect(e, stock.symbol)}
                                 >
-                                    <th scope="row" style={{ width: "8%" }}>
+                                    <th scope="row" style={{ width: "12%" }}>
                                         <input
                                             style={{ textAlign: "center" }}
                                             name={stock.symbol}
