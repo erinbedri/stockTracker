@@ -8,8 +8,7 @@ import { WatchListContext } from "../context/WatchListContext";
 
 export default function StockTable() {
     const [stockData, setStockData] = useState([]);
-    const [stockNumbers, setStockNumbers] = useState({});
-    const { watchList, deleteStock } = useContext(WatchListContext);
+    const { watchList, deleteStock, addStock } = useContext(WatchListContext);
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
@@ -36,14 +35,7 @@ export default function StockTable() {
 
         const { name, value } = e.target;
 
-        // Update the stockNumbers state with the new value
-        setStockNumbers((prevStockNumbers) => ({
-            ...prevStockNumbers,
-            [name]: value,
-        }));
-
-        // Store the updated stockNumbers state in localStorage
-        localStorage.setItem("stockNumbers", JSON.stringify({ ...stockNumbers, [name]: value }));
+        addStock(name, Number(value));
     };
 
     const handleStockSelect = (e, symbol) => {
@@ -56,18 +48,18 @@ export default function StockTable() {
     };
 
     const getShares = (stock) => {
-        const stockNumbersStr = localStorage.getItem("stockNumbers");
-        const stockNumbers = JSON.parse(stockNumbersStr);
+        const currentStock = watchList[stock.symbol];
 
-        const specificValue = stockNumbers[stock.symbol];
-        return Number(specificValue);
+        return Number(currentStock);
     };
 
     useEffect(() => {
+        const stockKeys = watchList ? Object.keys(watchList).sort() : [];
+
         const fetchData = async () => {
             try {
                 const responses = await Promise.all(
-                    watchList.map((stock) => {
+                    stockKeys.map((stock) => {
                         return finnHub.get("/quote", {
                             params: {
                                 symbol: stock,
@@ -89,13 +81,6 @@ export default function StockTable() {
         };
         fetchData();
     }, [watchList]);
-
-    useEffect(() => {
-        const storedStockNumbers = JSON.parse(localStorage.getItem("stockNumbers"));
-        if (storedStockNumbers) {
-            setStockNumbers(storedStockNumbers);
-        }
-    }, []);
 
     return (
         <>
@@ -146,7 +131,7 @@ export default function StockTable() {
                                         <input
                                             style={{ textAlign: "center" }}
                                             name={stock.symbol}
-                                            value={stockNumbers[stock.symbol]}
+                                            value={watchList[stock.symbol]}
                                             type="number"
                                             className="form-control"
                                             id="numberOfStocks"

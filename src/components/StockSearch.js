@@ -25,7 +25,7 @@ export default function StockSearch() {
                         className="dropdown-item"
                         key={result.symbol}
                         onClick={() => {
-                            addStock(result.symbol);
+                            addStock(result.symbol, 0);
                             setSearch("");
                         }}
                     >

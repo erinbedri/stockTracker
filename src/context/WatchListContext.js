@@ -3,7 +3,16 @@ import { app, database } from "../firebaseConfig";
 import { AuthContext } from "./AuthContext";
 
 //
-import { collection, setDoc, doc, updateDoc, arrayUnion, getDoc, onSnapshot } from "firebase/firestore";
+import {
+    collection,
+    setDoc,
+    doc,
+    updateDoc,
+    arrayUnion,
+    getDoc,
+    onSnapshot,
+    deleteFieldsetDoc,
+} from "firebase/firestore";
 
 export const WatchListContext = createContext();
 
@@ -19,7 +28,7 @@ export const WatchListContextProvider = (props) => {
 
             if (documentSnapshot.exists()) {
                 const data = documentSnapshot.data();
-                const stocks = data.stocks;
+                const stocks = data;
                 callback(stocks);
             } else {
                 callback([]);
@@ -27,7 +36,7 @@ export const WatchListContextProvider = (props) => {
 
             const unsubscribe = onSnapshot(documentRef, (doc) => {
                 const data = doc.data();
-                const stocks = data.stocks;
+                const stocks = data;
                 callback(stocks);
             });
 
@@ -41,7 +50,7 @@ export const WatchListContextProvider = (props) => {
         }
     }, [email]);
 
-    const addStock = async (stock) => {
+    const addStock = async (stock, count) => {
         if (!stock) {
             throw new Error("Invalid stock value");
         }
@@ -51,28 +60,44 @@ export const WatchListContextProvider = (props) => {
         const documentSnapshot = await getDoc(documentRef);
 
         if (!documentSnapshot.exists()) {
-            await setDoc(documentRef, { stocks: [stock] });
+            await setDoc(documentRef, {});
             console.log("Document added");
-        } else {
-            await updateDoc(documentRef, {
-                stocks: arrayUnion(stock),
-            });
-            console.log("Document updated");
         }
+
+        const documentData = documentSnapshot.data();
+        const updatedData = { ...documentData, [stock]: count };
+        await updateDoc(documentRef, updatedData);
+        console.log("Document updated");
     };
 
     const deleteStock = async (stock) => {
+        if (!stock) {
+            throw new Error("Invalid stock value");
+        }
+
         const collectionRef = collection(database, "watchList");
         const documentRef = doc(collectionRef, email);
         const documentSnapshot = await getDoc(documentRef);
 
         if (documentSnapshot.exists()) {
             const documentData = documentSnapshot.data();
-            const updatedStocks = documentData.stocks.filter((el) => el !== stock);
-            await updateDoc(documentRef, { stocks: updatedStocks });
-            console.log("Stock deleted from Firestore");
+
+            const updatedData = {};
+            for (const key in documentData) {
+                if (key !== stock) {
+                    updatedData[key] = documentData[key];
+                }
+            }
+
+            try {
+                await setDoc(documentRef, updatedData);
+                console.log("Document updated");
+            } catch (error) {
+                console.error("Update error: ", error);
+            }
+        } else {
+            console.log("Document does not exist");
         }
-        setWatchList((prevWatchList) => prevWatchList.filter((el) => el !== stock));
     };
 
     /*
