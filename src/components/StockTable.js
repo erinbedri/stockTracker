@@ -21,6 +21,15 @@ export default function StockTable() {
         return percentage > 0 ? <BsFillCaretUpFill /> : <BsFillCaretDownFill />;
     };
 
+    const onRemove = (e, stock) => {
+        e.stopPropagation();
+
+        const response = window.confirm("Are you sure you want to delete this stock from your list?");
+        if (response) {
+            deleteStock(stock.symbol);
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -108,14 +117,8 @@ export default function StockTable() {
                                     <td>${stock.data.o.toFixed(2)}</td>
                                     <td>${stock.data.pc.toFixed(2)}</td>
                                     <td>
-                                        <button
-                                            className="btn btn-danger btn-sm"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                deleteStock(stock.symbol);
-                                            }}
-                                        >
-                                            remove
+                                        <button className="btn btn-danger btn-sm" onClick={(e) => onRemove(e, stock)}>
+                                            X
                                         </button>
                                     </td>
                                 </tr>
