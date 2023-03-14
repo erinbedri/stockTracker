@@ -142,10 +142,10 @@ export default function StockTable() {
                                     <td>{stock.symbol}</td>
                                     <td>{stock.data.c.toFixed(2)}</td>
                                     <td className={`text-${changeColor(stock.data.d)}`}>
-                                        {stock.data.d} {changeIcon(stock.data.d)}
+                                        {stock.data.d.toFixed(2)} {changeIcon(stock.data.d)}
                                     </td>
                                     <td className={`text-${changeColor(stock.data.d)}`}>
-                                        {stock.data.dp} {changeIcon(stock.data.dp)}
+                                        {stock.data.dp.toFixed(2)} {changeIcon(stock.data.dp)}
                                     </td>
                                     <td>{stock.data.h.toFixed(2)}</td>
                                     <td>{stock.data.l.toFixed(2)}</td>
