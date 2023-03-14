@@ -71,7 +71,7 @@ export default function StockSearch() {
                     placeholder="Search for Stock"
                     autoComplete="off"
                 />
-                <label htmlFor="search">Search for Stock</label>
+                <label htmlFor="search">Search for Stock Ticker</label>
 
                 {renderDropdown()}
             </div>
