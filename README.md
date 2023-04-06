@@ -1,7 +1,7 @@
 # Stock Watchlist
 
 ## Description:
-"Stock Watchlist" is a React app deployed on Firebase that enables users to browse and monitor stocks by adding them to their watchlist. The app utilizes the ApexCharts library to display historic stock data and stores user information on local storage for easy accessibility.
+"Stock Watchlist" is a React app deployed on Firebase that enables users to browse and monitor stocks by adding them to their watchlist. The app utilizes the ApexCharts library to display historic stock data.
 
 ## URL: 
 https://stock-watchlist-8222a.web.app/
